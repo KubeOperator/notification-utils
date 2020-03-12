@@ -25,7 +25,7 @@ class WorkWinXin():
         }
         url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={0}'.format(token)
         result = requests.post(url=url, headers=self.headers, json=data)
-        return result
+        return Response(code=result.status_code, data=json.loads(result.text))
 
     def get_token(self, corp_id, corp_secret):
         url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={}&corpsecret={}'.format(corp_id, corp_secret)
