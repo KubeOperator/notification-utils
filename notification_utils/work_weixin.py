@@ -14,10 +14,10 @@ class WorkWinXin():
         "Content-Type": "application/json",
     }
 
-    def send_message(self, content, token, agent_id, touser):
+    def send_message(self, receiver, content, token, agent_id):
         data = {
             "msgtype": "text",
-            "touser": touser,
+            "touser": receiver,
             "agentid": agent_id,
             "text": {
                 "content": content

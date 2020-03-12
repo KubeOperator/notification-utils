@@ -18,16 +18,16 @@ class DingTalk():
         self.webhook = webhook
         self.secret = secret
 
-    def send_message(self, user, message):
+    def send_message(self, receiver, content):
 
         data = {
             "msgtype": "text",
             "text": {
-                "content": str(message)
+                "content": str(content)
             },
             "at": {
                 "atMobiles": [
-                    user
+                    receiver
                 ],
                 "isAtAll": False
             }
