@@ -12,13 +12,12 @@ from ko_notification_utils.response import Response
 
 class Email():
 
-    def __init__(self, address, username, password):
+    def __init__(self, address, port, username, password):
         self.username = username
         self.password = password
+        self.port = port
         self.address = address
         self.smtp = smtplib.SMTP()
-        self.smtp.connect(self.address)
-        self.smtp.login(self.username, self.password)
 
     def send_message(self, receiver, content, title):
         msg = MIMEText(content, 'plain', 'utf-8')
@@ -28,12 +27,17 @@ class Email():
 
         try:
             self.smtp.sendmail(self.username, receiver, msg.as_string())
-            return Response(code=200, data={'success': True, 'message': 'send email success!'})
+            return Response(code=200, success=True, data={'message': 'send email success!'})
         except smtplib.SMTPException:
-            return Response(code=400, data={'success': False, 'message': 'send email failed!'})
+            return Response(code=500, success=False, data={'message': 'send email failed!'})
 
     def quit(self):
         self.smtp.quit()
 
-    def connect_test(self):
-        return self.smtp.login(self.username, self.password)
+    def login(self):
+        try:
+            self.smtp.connect(self.address)
+            self.smtp.login(self.username, self.password)
+            return Response(code=200, success=True, data={'message': 'login success'})
+        except smtplib.SMTPAuthenticationError as e:
+            return Response(code=500, success=False, data={'message': str(e.smtp_error.decode())})

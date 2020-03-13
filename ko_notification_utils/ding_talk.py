@@ -43,7 +43,11 @@ class DingTalk():
                                                                                                     timestamp, sign)
 
         try:
-            result = requests.post(url, data=json.dumps(data), headers=self.headers, timeout=20)
-            return Response(code=result.status_code, data=json.loads(data))
+            result = requests.post(url, data=json.dumps(data), headers=self.headers)
+
+            if json.loads(data)['errcode'] == 0:
+                return Response(code=result.status_code, success=True, data=json.loads(data))
+            else:
+                return Response(code=500, success=False, data=json.loads(data))
         except Exception as e:
-            return Response(code=400, data=json.loads(data))
+            return Response(code=500, success=False, data=json.loads(data))

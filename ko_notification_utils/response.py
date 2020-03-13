@@ -8,6 +8,7 @@
 
 class Response():
 
-    def __init__(self, code, data):
+    def __init__(self, code, success, data):
         self.code = code
         self.data = data
+        self.success = success
