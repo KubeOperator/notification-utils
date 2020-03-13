@@ -2,5 +2,5 @@
 env/
 dist/
 test*
-notification_utils.egg-info/
-notification_utils/_trial_temp
+ko_notification_utils.egg-info/
+ko_notification_utils/_trial_temp

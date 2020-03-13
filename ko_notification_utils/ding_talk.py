@@ -6,7 +6,7 @@ import hashlib
 import base64
 from urllib import parse
 
-from notification_utils.response import Response
+from ko_notification_utils.response import Response
 
 
 class DingTalk():

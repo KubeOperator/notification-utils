@@ -7,7 +7,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
-from notification_utils.response import Response
+from ko_notification_utils.response import Response
 
 
 class Email():

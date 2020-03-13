@@ -8,7 +8,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-with open('notification_utils/__init__.py', 'r') as fd:
+with open('ko_notification_utils/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
@@ -22,7 +22,7 @@ with open('requirements.txt', 'r') as f:
     requirements = [x.strip() for x in f.readlines()]
 
 setup(
-    name='notification-utils',
+    name='ko-notification-utils',
     version=version,
     keywords=['kubeOperator', 'DingTalk', 'WeiChat', 'Email'],
     description='kubeOperator notification util',
@@ -31,7 +31,7 @@ setup(
     url='https://kubeoperator.io/',
     author='kubeOperator team',
     author_email='support@fit2cloud.com',
-    packages=['notification_utils'],
+    packages=['ko_notification_utils'],
     data_files=[('requirements', ['requirements.txt'])],
     include_package_data=True,
     install_requires=requirements,

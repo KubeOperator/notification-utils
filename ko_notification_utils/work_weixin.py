@@ -6,7 +6,7 @@
 =================================================='''
 import requests
 import json
-from notification_utils.response import Response
+from ko_notification_utils.response import Response
 
 
 class WorkWinXin():
