@@ -19,17 +19,27 @@ class Email():
         self.address = address
         self.smtp = smtplib.SMTP()
 
-    def send_message(self, receiver, content, title):
-        msg = MIMEText(content, 'plain', 'utf-8')
+    def send_mail(self, receiver, content, title, email_type):
+        if email_type == None:
+            email_type = 'plain'
+        else:
+            email_type = email_type
+        msg = MIMEText(content, email_type, 'utf-8')
         msg['From'] = self.username
         msg['To'] = receiver
         msg['Subject'] = Header(title, 'utf-8').encode()
-
         try:
+            self.login()
             self.smtp.sendmail(self.username, receiver, msg.as_string())
             return Response(code=200, success=True, data={'message': 'send email success!'})
         except smtplib.SMTPException:
             return Response(code=500, success=False, data={'message': 'send email failed!'})
+
+    def send_html_mail(self, receiver, content, title):
+        return self.send_mail(receiver, content, title, 'html')
+
+    def send_plain_mail(self, receiver, content, title):
+        return self.send_mail(receiver, content, title, 'plain')
 
     def quit(self):
         self.smtp.quit()

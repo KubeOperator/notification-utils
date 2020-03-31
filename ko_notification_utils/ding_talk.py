@@ -18,20 +18,21 @@ class DingTalk():
         self.webhook = webhook
         self.secret = secret
 
-    def send_message(self, receiver, content):
+    def send_message(self, receivers, content , type):
+
+        if type is None:
+            type = 'text'
+        else:
+            type =  type
 
         data = {
-            "msgtype": "text",
-            "text": {
-                "content": str(content)
-            },
+            "msgtype": type,
             "at": {
-                "atMobiles": [
-                    receiver
-                ],
+                "atMobiles": receivers,
                 "isAtAll": False
             }
         }
+        data[type] = content
 
         timestamp = int(round(time.time() * 1000))
         secret_enc = bytes(self.secret, 'utf-8')
@@ -39,15 +40,25 @@ class DingTalk():
         string_to_sign_enc = bytes(string_to_sign, 'utf-8')
         hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
         sign = parse.quote_plus(base64.b64encode(hmac_code))
-        url = "https://oapi.dingtalk.com/robot/send?access_token={0}&timestamp={1}&sign={2}".format(self.webhook,
-                                                                                                    timestamp, sign)
+        url = "{0}&timestamp={1}&sign={2}".format(self.webhook, timestamp, sign)
 
-        try:
-            result = requests.post(url, data=json.dumps(data), headers=self.headers)
+        result = requests.post(url, data=json.dumps(data), headers=self.headers)
 
-            if json.loads(data)['errcode'] == 0:
-                return Response(code=result.status_code, success=True, data=json.loads(data))
-            else:
-                return Response(code=500, success=False, data=json.loads(data))
-        except Exception as e:
-            return Response(code=500, success=False, data=json.loads(data))
+        if json.loads(result.text)['errcode'] == 0:
+            return Response(code=result.status_code, success=True, data=json.loads(result.text))
+        else:
+            return Response(code=500, success=False, data=json.loads(result.text))
+
+    def send_markdown_msg(self, receivers, content):
+        markdown = {
+            "title":content.get('title',''),
+            "text":content.get('text','')
+        }
+        return self.send_message(receivers=receivers,content=markdown,type='markdown')
+
+    def send_text_msg(self, receivers, content):
+        text = {
+            "content":content
+        }
+        return  self.send_message(receivers=receivers,content=text,type='text')
+
