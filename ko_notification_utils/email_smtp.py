@@ -5,10 +5,13 @@
 @Date   ：2020/3/12 
 =================================================='''
 import smtplib
+import logging
+
 from email.mime.text import MIMEText
 from email.header import Header
 from ko_notification_utils.response import Response
 
+logging.getLogger("requests").setLevel(logging.ERROR)
 
 class Email():
 

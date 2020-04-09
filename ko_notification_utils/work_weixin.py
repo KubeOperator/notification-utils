@@ -6,8 +6,10 @@
 =================================================='''
 import requests
 import json
+import logging
 from ko_notification_utils.response import Response
 
+logging.getLogger("requests").setLevel(logging.ERROR)
 
 class WorkWeiXin():
     headers = {

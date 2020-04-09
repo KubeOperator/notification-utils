@@ -4,10 +4,12 @@ import time
 import hmac
 import hashlib
 import base64
-from urllib import parse
+import logging
 
+from urllib import parse
 from ko_notification_utils.response import Response
 
+logging.getLogger("requests").setLevel(logging.ERROR)
 
 class DingTalk():
     headers = {
